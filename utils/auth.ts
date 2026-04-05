@@ -19,18 +19,22 @@ const getUsers = async (): Promise<User[] | null> => {
 const addUser = async (user: User) => {
   try {
     const users = await getUsers();
-
     if (users?.length) {
-      const isUserExist = users?.find((userIn) => userIn.id === user.id);
-
+      const isUserExist = users?.find((userIn) => userIn.email === user.email);
       if (isUserExist) throw new Error("User is already exist");
 
       const newUsersData = users?.push(user);
 
       await AsyncStorage.setItem("users", JSON.stringify(newUsersData));
+    } else {
+      let users: Array<User> = [];
+
+      users.push(user);
+
+      await AsyncStorage.setItem("users", JSON.stringify(users));
     }
   } catch (error: any) {
-    return error.message;
+    throw error;
   }
 };
 

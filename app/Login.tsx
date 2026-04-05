@@ -35,19 +35,23 @@ const Login = () => {
   const arrow = "<";
 
   const validation = () => {
+    let isValid = true;
     if (!email) {
+      let isValid = false;
       setEmailRequiredError("Email is required");
     }
     if (!password) {
+      isValid = false;
       setPasswordRequiredError("Password is required");
     }
-    return;
+    return isValid;
   };
 
   const handleLogin = async () => {
     setEmailRequiredError("");
     setPasswordRequiredError("");
-    validation();
+    const isValid = validation();
+    if (!isValid) return;
     try {
       setLoading(true);
       const users = await getUsers();
@@ -65,7 +69,7 @@ const Login = () => {
         router.push("/Home");
       }
     } catch (error: any) {
-      console.log({ error });
+      console.log("error in login: ", error);
       setError(error?.message);
     } finally {
       setLoading(false);

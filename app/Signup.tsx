@@ -46,28 +46,36 @@ const SignUp = () => {
     useState<string>("");
 
   const validation = () => {
+    let isValid = true;
     if (!fieldsData.fullName) {
+      isValid = false;
       setFullNaneRequiredError("Full name is required");
     }
     if (!fieldsData.email) {
-      setPasswordRequiredError("Password is required");
+      isValid = false;
+
+      setEmailRequiredError("Password is required");
     }
     if (!fieldsData.password) {
+      isValid = false;
+
       setPasswordRequiredError("Password is required");
     }
-    return;
+    return isValid;
   };
 
   const handleSignup = async () => {
+    setFullNaneRequiredError("");
     setEmailRequiredError("");
     setPasswordRequiredError("");
-    validation();
+    const isValid = validation();
+    if (!isValid) return;
     try {
       setLoading(true);
       await addUser({ ...fieldsData, id: new Date() });
       router.push("/Login");
     } catch (error: any) {
-      console.log({ error });
+      console.log("error in signup: ", error);
       setError(error?.message);
     } finally {
       setLoading(false);

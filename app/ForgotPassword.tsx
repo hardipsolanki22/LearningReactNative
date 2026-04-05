@@ -51,6 +51,8 @@ const ForgotPassword = () => {
   };
 
   const verifyOtpHandler = (otpByUser: number) => {
+    setEmailRequiredError("");
+    console.log(otpByUser, otp)
     if (otpByUser !== otp) {
       setError("Invalid OTP...!");
       return;
